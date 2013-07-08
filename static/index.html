@@ -1,0 +1,69 @@
+<HTML>
+    <link rel="stylesheet" type="text.css" href="style.css"/>
+    <script src="js/jquery-1.10.1.min.js"></script>
+    <script>
+    $(document).ready(refresh())
+    function refresh() {
+        $.getJSON('/groups', function(data) {
+            $('.outerTable tr').remove()
+            $.each(data, function(key, value) {
+                $('.outerTable').append($('\
+                    <tr> \
+                        <td>' + value['name'] + '</td> \
+                        <td> \
+                            <table><tr><td>\
+                            <input \
+                                id="slider_' + value['id'] + '" \
+                                type="range" \
+                                min="0" \
+                                max="100" \
+                                step="5" \
+                                value="' + value['level'] +'" \
+                                onchange="updateTextValue(' + value['id'] + ')"> \
+                            </input></td></tr><tr><td> \
+                            <progress min="0" max="100" value="' + value['level'] + '"/> \
+                            </td></tr></table> \
+                        </td> \
+                        <td> \
+                            <input \
+                                id="text_' + value['id'] + '" \
+                                type="text" \
+                                size="2" \
+                                value="' + value['level'] +'" \
+                                onchange="updateRangeValue(' + value['id'] + ')"> \
+                            </input> \
+                        </td> \
+                        <td> \
+                            <a href="/edit.html?id=' + value['id'] + '" \>edit</a> \
+                        </td> \
+                    </tr>'))
+            })
+        })
+    }
+    
+    function updateTextValue(id) {
+        document.getElementById('text_' + id).value = document.getElementById('slider_' + id).value
+    }
+    
+    function updateRangeValue(id) {
+        document.getElementById('slider_' + id).value = document.getElementById('text-' + id).value
+    }
+    
+    function sendChanges() {
+        $('input[type="range"]').each(function(index) {
+            id = this.id.replace("slider_","")
+            value = $(this).val()
+            
+            $.ajax({
+                url: '/groups/' + id + '?level=' + value,
+                type: 'PUT',
+                success: function(data) {refresh()}
+            });
+        });
+    }
+    </script>
+
+    <H1>Lights</H1>
+    <table class="outerTable"></table>
+    <input type="button" value="Apply" onclick="sendChanges()"/>
+</HTML>

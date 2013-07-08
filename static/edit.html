@@ -1,0 +1,71 @@
+<HTML>
+    <link rel="stylesheet" type="text.css" href="style.css"/>
+    <script src="js/jquery-1.10.1.min.js"></script>
+    <script>
+        function getURLParameter(name) {
+            return decodeURI(
+                (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+            );
+        }
+
+        $(document).ready(refresh())
+        function refresh() {
+            $.getJSON('/groups/' + getURLParameter('id'), function (data) {
+                $('#name').html(data['name'])
+                for (var i = 1; i <= 255; ++i) {
+                    var checked = ''
+                    if ($.inArray(i, data['channels']) != -1)
+                        checked = 'checked'
+
+                
+                    $('#table').append($('<div class="toggleButton" id="div_' + i + '">\
+                        <label for=channel_"' + i + '">\
+                            <input type="checkbox" id="channel_' + i + '" value="' + i + '" ' + checked + '/>\
+                        ' + i + '\
+                        </label> \
+                    </div>'))
+                }
+
+                $("input:checkbox").each(function () {
+                    $(this).closest("div").css('background-color', this.checked ? '#ffff00' : '#cccccc');
+                    $(this).closest("div").click(function () {
+                        var checkbox = $(this).children("label").children("input");
+                        if (checkbox.prop('checked')) {
+                            checkbox.prop('checked', false);
+                            $(this).closest("div").css('background-color', '#cccccc')
+                        } else {
+                            checkbox.prop('checked', true);
+                            $(this).closest("div").css('background-color', '#ffff00');
+                        }
+
+                        save();
+
+                    });
+                });
+   
+            })
+        }
+
+        function save() {
+            var selected = new Array()
+            $("input:checkbox:checked").each(function () {
+                selected.push($(this).val());
+            });
+           
+            url = '/groups/' + getURLParameter('id') + '?channels=' + selected.join();
+           
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                success: function (data) {
+                }
+            });
+        }
+    </script>
+
+
+    <H1>Edit <span id="name">Loading...</span></H1>
+    <div id="message" />
+    <div id="table" class="columnLayout"></div>
+ 
+</HTML>

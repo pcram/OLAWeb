@@ -1,0 +1,50 @@
+input[type="range"] {
+    width: 300px;
+}
+
+progress {
+    width: 300px;
+    height: 10px;
+}
+
+table td {
+    font-size: 20pt;
+    vertical-align: middle;
+}
+
+.outerTable {
+    border-spacing: 0 25px;
+}
+
+table input[type="text"] {
+    font-size: 20pt;
+}
+
+input[type="button"] {
+    font-size: 20pt;
+}
+
+.toggleButton {
+    float: left;
+    font-size: 40pt;
+    width: 100px;
+    background-color: #cccccc;
+    margin: 10px;
+    text-align: center;
+}
+
+/*.columnLayout {
+    column-count: 3;
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+}*/
+
+label {
+    position: relative;
+    z-index: 3;
+}
+    /* CSS to make the checkbox disappear (but remain functional) */
+    label input {
+        position: absolute;
+        visibility: hidden;
+    }

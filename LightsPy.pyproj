@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0a8a65fc-8c42-4d6c-946d-ccc0adc73b37}</ProjectGuid>
+    <ProjectHome />
+    <StartupFile>TestServer.py</StartupFile>
+    <SearchPath />
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Compile Include="ChannelController.py" />
+    <Compile Include="Group.py" />
+    <Compile Include="GroupController.py" />
+    <Compile Include="GroupSerializer.py" />
+    <Compile Include="OLAController.py" />
+    <Compile Include="OLAServer.py" />
+    <Compile Include="TestServer.py" />
+    <Compile Include="WebAdapter.py" />
+    <Content Include="app.config" />
+    <Content Include="Readme.txt" />
+    <Content Include="static\edit.html">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="static\index.html" />
+    <Content Include="static\style.css" />
+    <Content Include="static\js\jquery-1.10.1.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="static" />
+    <Folder Include="static\js" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>
