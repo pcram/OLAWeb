@@ -21,6 +21,8 @@
     <Compile Include="GroupSerializer.py" />
     <Compile Include="OLAController.py" />
     <Compile Include="OLAServer.py" />
+    <Compile Include="ParkController.py" />
+    <Compile Include="ParkedChannel.py" />
     <Compile Include="TestServer.py" />
     <Compile Include="WebAdapter.py" />
     <Content Include="Readme.txt" />
@@ -31,6 +33,7 @@
       <SubType>Content</SubType>
     </Content>
     <Content Include="static\index.html" />
+    <Content Include="static\Park.html" />
     <Content Include="static\Red_x.png">
       <SubType>Content</SubType>
     </Content>

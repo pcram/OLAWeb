@@ -8,9 +8,10 @@ class IGroupController(object):
         pass
 
 class GroupController(IGroupController):
-    def __init__(self, groups, channelController):
+    def __init__(self, groups, parkList, channelController):
         self.groups = groups;
         self.channelController = channelController
+        self._parkedChannels = parkList
         for group in self.groups:
             group.level = 100
 
@@ -35,9 +36,12 @@ class GroupController(IGroupController):
 
         for channel in range(1, 256):
             maxValue = 0
-            for group in self.groups:
-                if group.channels.count(channel) > 0:
-                    maxValue = max(maxValue, group.level)
+            if channel in self._parkedChannels.keys():
+                maxValue = self._parkedChannels[channel]
+            else:
+                for group in self.groups:
+                    if group.channels.count(channel) > 0:
+                        maxValue = max(maxValue, group.level)
         
             data.append(maxValue * 255 / 100)
         
@@ -53,6 +57,10 @@ class GroupController(IGroupController):
     def Delete(self, id):
         self.groups = [x for x in self.groups if x.id != int(id)]
 
+    def SetParkList(self, parkList):
+        self._parkedChannels = parkList
+        self._SendUpdate()
+
 class MockChannelController(IChannelController):
     def SetLevels(self, universe, data):
         self.data = data
@@ -62,19 +70,18 @@ class Test_GroupController(unittest.TestCase):
         return percent * 255 / 100
 
     def setUp(self):
-        groups = [Group(1, "Stage", [1,2,3]), Group(2, "Center", [2])]
+        groups = [Group(1, "Stage", [1,2,3]), Group(2, "Center", [2]), Group(3, "Parked", [50])]
         self.mockChannelController = MockChannelController()
-        self.controller = GroupController(groups, self.mockChannelController);
+        self.parkList = {50 : 100, 60: 75}
+        self.controller = GroupController(groups, self.parkList, self.mockChannelController);
 
     def test_NewLevelSaved(self):
-        self.assertEqual(0, self.controller.groups[0].level)
         self.controller.SetLevel(1, 10)
         self.assertEqual(10, self.controller.groups[0].level)
 
     def test_ChannelsUpdated(self):
         self.controller.SetLevel(1, 10)
         self.assertEqual(self.percentToAbsolute(10), self.mockChannelController.data[0])
-        self.assertEqual(self.percentToAbsolute(10), self.mockChannelController.data[1])
         self.assertEqual(self.percentToAbsolute(10), self.mockChannelController.data[2])
         self.assertEqual(0, self.mockChannelController.data[3])
 
@@ -94,6 +101,31 @@ class Test_GroupController(unittest.TestCase):
         self.controller.SetChannelList(1, [10])
         self.assertEqual(self.percentToAbsolute(0), self.mockChannelController.data[0])
         self.assertEqual(self.percentToAbsolute(50), self.mockChannelController.data[9])
-     
+
+    def test_ParkedChannelsSet(self):
+        self.assertEqual(self.percentToAbsolute(100), self.mockChannelController.data[49])
+        self.assertEqual(self.percentToAbsolute(75), self.mockChannelController.data[59])
+
+    def test_ParkedChannelsDontGoHigher(self):
+        self.controller.SetLevel(3, 100)
+        self.assertEqual(self.percentToAbsolute(75), self.mockChannelController.data[59])
+
+    def test_ParkedChannelsDontGoLower(self):
+        self.controller.SetLevel(3, 0)
+        self.assertEqual(self.percentToAbsolute(75), self.mockChannelController.data[59])
+        self.assertEqual(self.percentToAbsolute(100), self.mockChannelController.data[49])
+ 
+    def test_UpdatingParkListSendsImmediately(self):
+        self.controller.SetParkList({55 : 100, 65 : 75})
+        
+        self.assertEqual(self.percentToAbsolute(100), self.mockChannelController.data[54])
+        self.assertEqual(self.percentToAbsolute(75), self.mockChannelController.data[64])
+
+        self.assertEqual(self.percentToAbsolute(0), self.mockChannelController.data[59])
+        self.assertEqual(self.percentToAbsolute(100), self.mockChannelController.data[49])
+
+        self.controller.SetLevel(3, 50)
+        self.assertEqual(self.percentToAbsolute(50), self.mockChannelController.data[49])
+ 
 if __name__ == "__main__":
     unittest.main();       
