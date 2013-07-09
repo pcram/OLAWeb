@@ -11,6 +11,10 @@ class GroupController(IGroupController):
     def __init__(self, groups, channelController):
         self.groups = groups;
         self.channelController = channelController
+        for group in self.groups:
+            group.level = 100
+
+        self._SendUpdate()
 
     def SetLevel(self, id, newLevel):
         for group in self.groups:
@@ -39,6 +43,15 @@ class GroupController(IGroupController):
         
         self.channelController.SetLevels(1, data)
 
+    def NewGroup(self):
+        maxid = 0
+        for group in self.groups:
+            maxid = max(maxid, group.id)
+        
+        self.groups.append(Group(maxid + 1, "New Group", []))
+
+    def Delete(self, id):
+        self.groups = [x for x in self.groups if x.id != int(id)]
 
 class MockChannelController(IChannelController):
     def SetLevels(self, universe, data):

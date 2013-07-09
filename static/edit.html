@@ -61,11 +61,54 @@
                 }
             });
         }
+        
+        function editName() {
+            $('#nameInput').val($('#name').text());
+            $('#editNameDiv').show();
+            $('#readonlyNameDiv').hide();
+        }
+        
+        function saveName() {
+            url = '/groups/' + getURLParameter('id') + '?name=' + $('#nameInput').val();
+
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                success: function(data) {
+                    $('#name').text($('#nameInput').val());
+                    $('#editNameDiv').hide();
+                    $('#readonlyNameDiv').show();
+                }
+            });
+        }
+
+        function cancelName() {
+            $('#editNameDiv').hide();
+            $('#readonlyNameDiv').show();
+        }
+        
+        function deleteGroup() {
+            if (confirm("Are you sure you want to delete this group?")) {
+                url = '/groups/' + getURLParameter('id');
+
+                $.ajax({
+                    url: url,
+                    type: 'DELETE',
+                    success: function(data) {
+                        window.location.replace('index.html');
+                    }
+                });
+            }
+        }
+        
     </script>
 
 
-    <H1>Edit <span id="name">Loading...</span></H1>
-    <div id="message" />
+    <div id="editNameDiv" style="display: none"><input type="text" value="Stage" id="nameInput" style="font-size:48px; width: 200px;float:left"/><img src="Checkmark.png" onclick="saveName()"/><img src="Red_x.png" onclick="cancelName()"/></div>
+    <div style="float:right"><input type="button" value="Delete Group" onclick="deleteGroup()"/></div>
+    <div id="readonlyNameDiv"><span id="name" style="text-decoration: underline; font-size:48px; float:left" onclick="editName()"></span></div>
+    <br/>
+    <br/>
+    <br/>
     <div id="table" class="columnLayout"></div>
- 
 </HTML>

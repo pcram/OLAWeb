@@ -23,12 +23,17 @@
     <Compile Include="OLAServer.py" />
     <Compile Include="TestServer.py" />
     <Compile Include="WebAdapter.py" />
-    <Content Include="app.config" />
     <Content Include="Readme.txt" />
+    <Content Include="static\Checkmark.png">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="static\edit.html">
       <SubType>Content</SubType>
     </Content>
     <Content Include="static\index.html" />
+    <Content Include="static\Red_x.png">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="static\style.css" />
     <Content Include="static\js\jquery-1.10.1.min.js" />
   </ItemGroup>

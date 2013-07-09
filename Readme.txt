@@ -7,7 +7,7 @@ Get group details:
 GET /groups/<id>
 
 Add a new group:
-POST /groups
+POST /groups?name=<name>&channels=<channels>
 
 Change a group (parameters are optional, but at least to do something useful):
 PUT /groups/<id>?level=<level>&name=<name>&channels=<channels>

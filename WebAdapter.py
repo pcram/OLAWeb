@@ -35,7 +35,26 @@ class WebAdapter(object):
             else:
                 self.controller.SetChannelList(id, [int(i) for i in params['channels'].split(",")])
         
-            file('groups.json', 'w').write(JSonSerializer().Save(self.controller.groups))
+            self.Save()
+
+        if 'name' in params:
+            for group in self.controller.groups:
+                if group.id == int(id):
+                    group.name = params['name']
+
+            self.Save()
+
+    def POST(self):
+        self.controller.NewGroup()
+        self.Save()
+
+    def DELETE(self, id):
+        self.controller.Delete(id)
+        self.Save()
+
+    def Save(self):
+        file('groups.json', 'w').write(JSonSerializer().Save(self.controller.groups))
+
 
 class GroupsFullDetails(json.JSONEncoder):
     def default(self, obj):
