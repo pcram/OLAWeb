@@ -69,10 +69,32 @@
             success: function (data) { refresh() }
         });
     }
+
+    $(function () {
+        $.getJSON('/presets', function (data) {
+            $.each(data, function () {
+                var groups = this.groups;
+                $('#presets').append($('<input/>').attr('type', 'button').val(this.name).click(function () {
+                    $.each(groups, function () {
+                        $('#slider_' + this.id).val(this.level);
+                    });
+                    //$.each(groups, function() {
+                    //    alert($(this.id));  
+                    //});
+                }));
+            });
+        });
+    });
 </script>
 
-<h1>Lights</h1>
-<table class="outerTable"></table>
-<a href="#" onclick="newGroup()">Add New Group...</a><p />
-<input type="button" value="Apply" onclick="sendChanges()" />
+<div style="float: left">
+    <h1>Groups  </h1>
+    <table class="outerTable"></table>
+    <a href="#" onclick="newGroup()">Add New Group...</a><p />
+    <input type="button" value="Apply" onclick="sendChanges()" />
+</div>
+<div style="float: left; margin-left: 50px">
+    <h1>Presets </h1>
+    <div id="presets"></div>
+</div>
 </html>

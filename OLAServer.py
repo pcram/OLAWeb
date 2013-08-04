@@ -14,7 +14,7 @@ groups = JSonSerializer().Load(file('groups.json', 'r').read())
 parkedChannels = ParseParkedChannels(file('parked.json', 'r').read())
 channelController = ParkedChannelAdapter(parkedChannels, OLAController())
 groupController = GroupController(groups, channelController)
-root.groups = WebAdapter(groupController)
+root.groups = GroupWebAdapter(groupController)
 
 
 StartWebServer(root)

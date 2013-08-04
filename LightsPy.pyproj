@@ -22,9 +22,10 @@
     <Compile Include="OLAController.py" />
     <Compile Include="OLAServer.py" />
     <Compile Include="ParkedChannel.py" />
+    <Compile Include="PresetWebAdapter.py" />
     <Compile Include="TestServer.py" />
     <Compile Include="ParkedChannelAdapter.py" />
-    <Compile Include="WebAdapter.py" />
+    <Compile Include="GroupWebAdapter.py" />
     <Content Include="Readme.txt" />
     <Content Include="static\Checkmark.png">
       <SubType>Content</SubType>

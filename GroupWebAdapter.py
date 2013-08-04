@@ -4,7 +4,7 @@ import os
 import cherrypy
 from GroupSerializer import *
 
-class WebAdapter(object):
+class GroupWebAdapter(object):
     exposed = True
 
     def __init__(self, controller):
