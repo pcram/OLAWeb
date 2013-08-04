@@ -4,6 +4,7 @@ from GroupController import *
 from OLAController import *
 from WebAdapter import *
 from ParkedChannel import *
+from ParkedChannelAdapter import *
     
 class Root(object):
     pass
@@ -11,6 +12,9 @@ class Root(object):
 root = Root()
 groups = JSonSerializer().Load(file('groups.json', 'r').read())
 parkedChannels = ParseParkedChannels(file('parked.json', 'r').read())
-root.groups = WebAdapter(GroupController(groups, parkedChannels, OLAController()))
+channelController = ParkedChannelAdapter(parkedChannels, OLAController())
+groupController = GroupController(groups, channelController)
+root.groups = WebAdapter(groupController)
+
 
 StartWebServer(root)

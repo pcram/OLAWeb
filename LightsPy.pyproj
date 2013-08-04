@@ -21,9 +21,9 @@
     <Compile Include="GroupSerializer.py" />
     <Compile Include="OLAController.py" />
     <Compile Include="OLAServer.py" />
-    <Compile Include="ParkController.py" />
     <Compile Include="ParkedChannel.py" />
     <Compile Include="TestServer.py" />
+    <Compile Include="ParkedChannelAdapter.py" />
     <Compile Include="WebAdapter.py" />
     <Content Include="Readme.txt" />
     <Content Include="static\Checkmark.png">
