@@ -19,4 +19,5 @@ root.groups = GroupWebAdapter(groupController)
 
 presets = json.load(file('presets.json', 'r'))
 root.presets = PresetWebAdapter(presets)
+
 StartWebServer(root)

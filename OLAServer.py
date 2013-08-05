@@ -2,10 +2,11 @@ from Group import *
 from GroupSerializer import *
 from GroupController import *
 from OLAController import *
-from WebAdapter import *
+from GroupWebAdapter import *
 from ParkedChannel import *
 from ParkedChannelAdapter import *
-    
+from PresetWebAdapter import *
+
 class Root(object):
     pass
 
@@ -16,5 +17,7 @@ channelController = ParkedChannelAdapter(parkedChannels, OLAController())
 groupController = GroupController(groups, channelController)
 root.groups = GroupWebAdapter(groupController)
 
+presets = json.load(file('presets.json', 'r'))
+root.presets = PresetWebAdapter(presets)
 
 StartWebServer(root)
