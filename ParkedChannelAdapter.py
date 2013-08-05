@@ -1,5 +1,6 @@
 import unittest
 import array
+import copy
 from ChannelController import IChannelController
 
 class ParkedChannelAdapter(IChannelController):
@@ -9,11 +10,12 @@ class ParkedChannelAdapter(IChannelController):
 
 
     def SetLevels(self, universe, data):
+        newdata = copy.deepcopy(data)
         for channel in range(1, 256):
            if channel in self._parkedChannels.keys():
-                data[channel] = self._parkedChannels[channel] * 255 / 100
+                newdata[channel] = self._parkedChannels[channel] * 255 / 100
 
-        self._channelController.SetLevels(universe, data)
+        self._channelController.SetLevels(universe, newdata)
 
 class MockChannelController(IChannelController):
     def SetLevels(self, universe, data):

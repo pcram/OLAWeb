@@ -1,3 +1,4 @@
+import time
 from Group import *
 from GroupSerializer import *
 from GroupController import *
@@ -6,6 +7,7 @@ from GroupWebAdapter import *
 from ParkedChannel import *
 from ParkedChannelAdapter import *
 from PresetWebAdapter import *
+from FadeChannelAdapter import *
 
 class Root(object):
     pass
@@ -13,7 +15,7 @@ class Root(object):
 root = Root()
 groups = JSonSerializer().Load(file('groups.json', 'r').read())
 parkedChannels = ParseParkedChannels(file('parked.json', 'r').read())
-channelController = ParkedChannelAdapter(parkedChannels, OLAController())
+channelController = FadeChannelAdapter(lambda: time.sleep(0.01), ParkedChannelAdapter(parkedChannels, OLAController()))
 groupController = GroupController(groups, channelController)
 root.groups = GroupWebAdapter(groupController)
 

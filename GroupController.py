@@ -55,8 +55,8 @@ class GroupController(IGroupController):
 
     
 class MockChannelController(IChannelController):
-    def SetLevels(self, universe, data):
-        self.data = data
+        def SetLevels(self, universe, data):
+            self.data = data
 
 class Test_GroupController(unittest.TestCase):
     def percentToAbsolute(self, percent):
