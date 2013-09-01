@@ -27,6 +27,15 @@
     <Compile Include="TestServer.py" />
     <Compile Include="ParkedChannelAdapter.py" />
     <Compile Include="GroupWebAdapter.py" />
+    <Content Include="groups.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="parked.json">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="presets.json">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Readme.txt" />
     <Content Include="static\Checkmark.png">
       <SubType>Content</SubType>

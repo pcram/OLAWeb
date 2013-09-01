@@ -1,0 +1,40 @@
+[
+    {
+        "name": "Pre-Service",
+		"groups" : [
+			{ "id" : 1, "level" : 5 },
+			{ "id" : 2, "level" : 66 }
+		]
+	},
+	{
+        "name": "Stage Up",
+		"groups" : [
+			{ "id" : 1, "level" : 85 }
+		]
+	},
+	{
+        "name": "House Mid",
+		"groups" : [
+			{ "id" : 2, "level" : 66 }
+		]
+	},
+	{
+        "name": "House Low",
+		"groups" : [
+			{ "id" : 2, "level" : 33 }
+		]
+	},
+	{
+        "name": "House Off",
+		"groups" : [
+			{ "id" : 2, "level" : 0 }
+		]
+	},
+	{
+        "name": "Blackout",
+		"groups" : [
+			{ "id" : 1, "level" : 0 },
+			{ "id" : 2, "level" : 0 }
+		]
+	}
+]
