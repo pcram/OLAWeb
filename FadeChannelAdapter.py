@@ -17,9 +17,9 @@ class FadeChannelAdapter(IChannelController):
         while self._data != data:
             for i,val in enumerate(data):
                 if self._data[i] < data[i]:
-                    self._data[i] += 1
+                    self._data[i] = min(data[i], self._data[i] + 5)
                 elif self._data[i] > data[i]:
-                    self._data[i] -= 1
+                    self._data[i] = max(data[i], self._data[i] - 5)
         
             self._controller.SetLevels(universe, self._data)
             if self._callback is not None:
@@ -42,40 +42,33 @@ class Test_GroupController(unittest.TestCase):
     def test_LevelFadesUp(self):
         self._fader.SetLevels(1, array.array('B', [0, 0]))
 
-        self._fader.SetLevels(1, array.array('B', [3, 0]))
+        self._fader.SetLevels(1, array.array('B', [13, 0]))
         
-        expected = [array.array('B', [1, 0]),
-                    array.array('B', [2, 0]),
-                    array.array('B', [3, 0])]
+        expected = [array.array('B', [5, 0]),
+                    array.array('B', [10, 0]),
+                    array.array('B', [13, 0])]
        
         self.assertEqual(expected, self._mockController.history)
 
     def test_LevelFadesDown(self):
+        self._fader.SetLevels(1, array.array('B', [0, 15]))
+
         self._fader.SetLevels(1, array.array('B', [0, 3]))
 
-        self._fader.SetLevels(1, array.array('B', [0, 0]))
-
-        expected = [array.array('B', [0, 2]),
-                    array.array('B', [0, 1]),
-                    array.array('B', [0, 0])]
+        expected = [array.array('B', [0, 10]),
+                    array.array('B', [0, 5]),
+                    array.array('B', [0, 3])]
        
         self.assertEqual(expected, self._mockController.history)
 
     def test_BothDirections(self):
         self._fader.SetLevels(1, array.array('B', [10, 50]))
 
-        self._fader.SetLevels(1, array.array('B', [15, 40]))
+        self._fader.SetLevels(1, array.array('B', [17, 38]))
 
-        expected = [array.array('B', [11, 49]),
-                    array.array('B', [12, 48]),
-                    array.array('B', [13, 47]),
-                    array.array('B', [14, 46]),
-                    array.array('B', [15, 45]),
-                    array.array('B', [15, 44]),
-                    array.array('B', [15, 43]),
-                    array.array('B', [15, 42]),
-                    array.array('B', [15, 41]),
-                    array.array('B', [15, 40])]
+        expected = [array.array('B', [15, 45]),
+                    array.array('B', [17, 40]),
+                    array.array('B', [17, 38])]
        
         self.assertEqual(expected, self._mockController.history)
 
