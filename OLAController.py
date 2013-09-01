@@ -1,17 +1,17 @@
 from ola.ClientWrapper import ClientWrapper
 from ChannelController import IChannelController
 import threading
+import Queue
+import array
 
-TICK_INTERVAL = 100  # in ms
-_universeData = {}
+_queue = Queue.Queue()
 
 def DmxSent(state):
-    if not state.Succeeded():
-        print "State: " + str(state) + ". Stopping."
-        wrapper.Stop()
+    data = _queue.get()
+    client = _wrapper.Client()
+    client.SendDmx(data[0], data[1], DmxSent)
 
 def SendDMXFrame():
-    _wrapper.AddEvent(TICK_INTERVAL, SendDMXFrame)
     
     client = _wrapper.Client()
     for universe in _universeData:     
@@ -21,7 +21,9 @@ def SendDMXFrame():
 def WorkerThread():
     global _wrapper
     _wrapper = ClientWrapper()
-    SendDMXFrame()
+    client = _wrapper.Client()
+
+    client.SendDmx(1, array.array('B'), DmxSent)
     _wrapper.Run()
 
 class OLAController(IChannelController):
@@ -29,6 +31,6 @@ class OLAController(IChannelController):
         thread = threading._start_new_thread(WorkerThread, ())
 
     def SetLevels(self, universe, data):
-        _universeData[universe] = data
-
+        _queue.put((universe, data))
+      
   

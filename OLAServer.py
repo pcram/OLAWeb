@@ -15,11 +15,12 @@ class Root(object):
 root = Root()
 groups = JSonSerializer().Load(file('groups.json', 'r').read())
 parkedChannels = ParseParkedChannels(file('parked.json', 'r').read())
-channelController = FadeChannelAdapter(lambda: time.sleep(0.01), ParkedChannelAdapter(parkedChannels, OLAController()))
+channelController = FadeChannelAdapter(lambda: None, ParkedChannelAdapter(parkedChannels, OLAController()))
 groupController = GroupController(groups, channelController)
 root.groups = GroupWebAdapter(groupController)
 
 presets = json.load(file('presets.json', 'r'))
 root.presets = PresetWebAdapter(presets)
 
+print "Starting"
 StartWebServer(root)
