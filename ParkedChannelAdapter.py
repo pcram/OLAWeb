@@ -11,7 +11,7 @@ class ParkedChannelAdapter(IChannelController):
 
     def SetLevels(self, universe, data):
         newdata = copy.deepcopy(data)
-        for channel in range(1, 256):
+        for channel in range(1, 512):
            if channel in self._parkedChannels.keys():
                 newdata[channel] = self._parkedChannels[channel] * 255 / 100
 

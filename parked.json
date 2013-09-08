@@ -1,1 +1,7 @@
-[{"channel" : 47, "level" : 100}, {"channel" : 247, "level" : 100}]
+[
+{"channel" : 47, "level" : 100}, 
+{"channel" : 254, "level" : 100},
+{"channel" : 257, "level" : 100},
+{"channel" : 253, "level" : 100},
+{"channel" : 260, "level" : 100}
+]

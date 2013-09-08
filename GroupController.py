@@ -33,7 +33,7 @@ class GroupController(IGroupController):
     def _SendUpdate(self):
         data = array.array('B')
 
-        for channel in range(1, 256):
+        for channel in range(1, 512):
             maxValue = 0
             for group in self.groups:
                 if group.channels.count(channel) > 0:

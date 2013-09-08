@@ -10,12 +10,15 @@ from PresetWebAdapter import *
 from FadeChannelAdapter import *
 
 class Root(object):
-    pass
+   exposed = True
+   def GET(self):
+      raise cherrypy.HTTPRedirect("/index.html")
 
 root = Root()
 groups = JSonSerializer().Load(file('groups.json', 'r').read())
 parkedChannels = ParseParkedChannels(file('parked.json', 'r').read())
-channelController = FadeChannelAdapter(lambda: None, ParkedChannelAdapter(parkedChannels, OLAController()))
+#channelController = FadeChannelAdapter(lambda: None, ParkedChannelAdapter(parkedChannels, OLAController()))
+channelController = ParkedChannelAdapter(parkedChannels, OLAController())
 groupController = GroupController(groups, channelController)
 root.groups = GroupWebAdapter(groupController)
 
