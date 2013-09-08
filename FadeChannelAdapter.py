@@ -17,9 +17,9 @@ class FadeChannelAdapter(IChannelController):
         while self._data != data:
             for i,val in enumerate(data):
                 if self._data[i] < data[i]:
-                    self._data[i] = min(data[i], self._data[i] + 5)
+                    self._data[i] = min(data[i], self._data[i] + 1)
                 elif self._data[i] > data[i]:
-                    self._data[i] = max(data[i], self._data[i] - 5)
+                    self._data[i] = max(data[i], self._data[i] - 1)
         
             self._controller.SetLevels(universe, self._data)
             if self._callback is not None:

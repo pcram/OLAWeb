@@ -17,8 +17,8 @@ class Root(object):
 root = Root()
 groups = JSonSerializer().Load(file('groups.json', 'r').read())
 parkedChannels = ParseParkedChannels(file('parked.json', 'r').read())
-#channelController = FadeChannelAdapter(lambda: None, ParkedChannelAdapter(parkedChannels, OLAController()))
-channelController = ParkedChannelAdapter(parkedChannels, OLAController())
+channelController = FadeChannelAdapter(lambda: None, ParkedChannelAdapter(parkedChannels, OLAController()))
+#channelController = ParkedChannelAdapter(parkedChannels, OLAController())
 groupController = GroupController(groups, channelController)
 root.groups = GroupWebAdapter(groupController)
 

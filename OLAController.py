@@ -4,26 +4,24 @@ import threading
 import Queue
 import array
 
-_queue = Queue.Queue()
+_cache = {}
 
 def DmxSent(state):
-    data = _queue.get()
-    client = _wrapper.Client()
-    client.SendDmx(data[0], data[1], DmxSent)
+    pass
 
 def SendDMXFrame():
-    
+    _wrapper.AddEvent(100, SendDMXFrame)    
     client = _wrapper.Client()
-    for universe in _universeData:     
-        client.SendDmx(universe, _universeData[universe], DmxSent)
+    for universe in _cache.keys():     
+        client.SendDmx(universe, _cache[universe], DmxSent)
+
 
 
 def WorkerThread():
     global _wrapper
     _wrapper = ClientWrapper()
     client = _wrapper.Client()
-
-    client.SendDmx(1, array.array('B'), DmxSent)
+    _wrapper.AddEvent(100, SendDMXFrame)
     _wrapper.Run()
 
 class OLAController(IChannelController):
@@ -31,6 +29,7 @@ class OLAController(IChannelController):
         thread = threading._start_new_thread(WorkerThread, ())
 
     def SetLevels(self, universe, data):
-        _queue.put((universe, data))
+	global _cache
+        _cache[universe] = data
       
   
