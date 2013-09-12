@@ -16,11 +16,15 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
   <ItemGroup>
     <Compile Include="ChannelController.py" />
+    <Compile Include="CommonServer.py" />
+    <Compile Include="MockClientWrapperFactory.py" />
+    <Compile Include="OLAClientWrapperFactory.py" />
     <Compile Include="FadeChannelAdapter.py" />
     <Compile Include="Group.py" />
     <Compile Include="GroupController.py" />
     <Compile Include="GroupSerializer.py" />
-    <Compile Include="OLAController.py" />
+    <Compile Include="MockClientWrapper.py" />
+    <Compile Include="ThreadControllerAdapter.py" />
     <Compile Include="OLAServer.py" />
     <Compile Include="ParkedChannel.py" />
     <Compile Include="PresetWebAdapter.py" />

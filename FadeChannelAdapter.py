@@ -4,9 +4,8 @@ import copy
 from ChannelController import IChannelController
 
 class FadeChannelAdapter(IChannelController):
-    def __init__(self, callback, controller):
+    def __init__(self, controller):
         self._controller = controller
-        self._callback = callback
         self._data = None
 
     def SetLevels(self, universe, data):
@@ -22,8 +21,8 @@ class FadeChannelAdapter(IChannelController):
                     self._data[i] = max(data[i], self._data[i] - 1)
         
             self._controller.SetLevels(universe, self._data)
-            if self._callback is not None:
-                self._callback()
+
+        self._controller.SetLevels(universe, self._data)
 
 class MockChannelController(IChannelController):
     def __init__(self):
