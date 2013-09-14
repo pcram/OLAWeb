@@ -41,16 +41,5 @@
         ], 
         "id": 3, 
         "name": "Flourescent"
-    }, 
-    {
-        "channels": [
-            47, 
-            253, 
-            254, 
-            257, 
-            260
-        ], 
-        "id": 4, 
-        "name": "Parked"
     }
 ]

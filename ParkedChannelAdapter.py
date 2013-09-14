@@ -5,6 +5,7 @@ from ChannelController import IChannelController
 
 class ParkedChannelAdapter(IChannelController):
     def __init__(self, parkList, channelController):
+	print parkList
         self._parkedChannels = parkList
         self._channelController = channelController
 
@@ -13,7 +14,7 @@ class ParkedChannelAdapter(IChannelController):
         newdata = copy.deepcopy(data)
         for channel in range(1, 512):
            if channel in self._parkedChannels.keys():
-                newdata[channel] = self._parkedChannels[channel] * 255 / 100
+                newdata[channel - 1] = self._parkedChannels[channel] * 255 / 100
 
         self._channelController.SetLevels(universe, newdata)
 
