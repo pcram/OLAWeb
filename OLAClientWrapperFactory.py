@@ -1,5 +1,5 @@
 from ola.ClientWrapper import ClientWrapper
 
 class OLAClientWrapperFactory:
-    def Create():
+    def Create(self):
         return ClientWrapper()
