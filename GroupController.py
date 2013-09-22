@@ -28,7 +28,9 @@ class GroupController(IGroupController):
             if group.id == int(id):
                 group.channels = channels
 
+        self.channelController.Fade = False
         self._SendUpdate()
+        self.channelController.Fade = True
 
     def _SendUpdate(self):
         data = array.array('B')

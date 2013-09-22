@@ -4,6 +4,8 @@ import copy
 import threading
 from ChannelController import IChannelController
 
+FADE_INTERVAL = 2
+
 class FadeChannelAdapter(IChannelController):
     def __init__(self, controller):
         self._controller = controller
@@ -11,23 +13,30 @@ class FadeChannelAdapter(IChannelController):
         self._current = {}
         self._newDataEvent = threading.Event()
         self._thread = threading._start_new_thread(self.WorkerThread, ())
+        self.Fade = True
 
     def SetLevels(self, universe, data):
         self._target[universe] = copy.deepcopy(data)
+        if not self.Fade:
+            self._current[universe] = copy.deepcopy(self._target[universe])
+            self._controller.SetLevels(universe, self._current[universe])
+
         self._newDataEvent.set()
     
+
+
     def WorkerThread(self):
         while True:
             somethingUpdated = False
             for universe in self._target.keys():
-                if not self._current.has_key(universe):
-                    self._current[universe] = copy.deepcopy(self._target[universe])
-                    self._controller.SetLevels(universe, self._current[universe])
-                    somethingUpdated = True
-                else:
+                if self.Fade and self._current.has_key(universe):
                     if self.Step(self._current[universe], self._target[universe]):
                         self._controller.SetLevels(universe, self._current[universe])
                         somethingUpdated = True
+                else:
+                    self._current[universe] = copy.deepcopy(self._target[universe])
+                    self._controller.SetLevels(universe, self._current[universe])
+                    somethingUpdated = True
 
             if not somethingUpdated:
                 self._newDataEvent.wait()
@@ -36,10 +45,10 @@ class FadeChannelAdapter(IChannelController):
         updated = False
         for i,val in enumerate(target):
             if current[i] < target[i]:
-                current[i] += 1
+                current[i] = min(target[i], current[i] + FADE_INTERVAL)
                 updated = True
             elif current[i] > target[i]:
-                current[i] -=1
+                current[i] = max(target[i], current[i] - FADE_INTERVAL)
                 updated = True
         return updated
         
