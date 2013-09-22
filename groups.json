@@ -41,5 +41,13 @@
         ], 
         "id": 3, 
         "name": "Flourescent"
+    }, 
+    {
+        "channels": [
+            20, 
+            21
+        ], 
+        "id": 4, 
+        "name": "Center Stage"
     }
 ]
