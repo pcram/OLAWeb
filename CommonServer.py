@@ -12,7 +12,10 @@ from ThreadControllerAdapter import *
 from MockClientWrapperFactory import *
 
 class Root(object):
-    pass
+    exposed = True
+
+    def GET(self):
+        raise cherrypy.HTTPRedirect("/index.html")
 
 def StartServer(ClientWrapperFactory):
     root = Root()
