@@ -3,20 +3,18 @@ import Queue
 import array
 
 _cache = {}
-_semaphore = threading.Semaphore()
 _clientWrapperFactory = None
-TICK_INTERVAL = 50
+_dataSentEvent = threading.Event()
+TICK_INTERVAL = 10
 
 def DmxSent(state):
-    _semaphore.release()
+    _dataSentEvent.set()
 
 def SendDMXFrame():
     _wrapper.AddEvent(TICK_INTERVAL, SendDMXFrame)    
     client = _wrapper.Client()
     for universe in _cache.keys():     
         client.SendDmx(universe, _cache[universe], DmxSent)
-
-
 
 def WorkerThread():
     global _wrapper
@@ -32,8 +30,9 @@ class ThreadControllerAdapter():
         thread = threading._start_new_thread(WorkerThread, ())
 
     def SetLevels(self, universe, data):
-        global _cache
+        global _cache, _dataSentEvent
+        _dataSentEvent.clear()
         _cache[universe] = data
-        _semaphore.acquire()
+        _dataSentEvent.wait()
       
   

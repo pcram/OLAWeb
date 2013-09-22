@@ -32,13 +32,13 @@ class Test_GroupController(unittest.TestCase):
         data = array.array('B', [0 for x in range(0,255)])
         data[60] = 255;
         self.controller.SetLevels(1, data)
-        self.assertEqual(191, self.mockChannelController.data[60])
+        self.assertEqual(191, self.mockChannelController.data[59])
 
     def test_ParkedChannelsDontGoLower(self):
         data = array.array('B', [0 for x in range(0,255)])
         data[50] = 0;
         self.controller.SetLevels(1, data)
-        self.assertEqual(255, self.mockChannelController.data[50])
+        self.assertEqual(255, self.mockChannelController.data[49])
  
 if __name__ == "__main__":
     unittest.main();       
