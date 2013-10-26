@@ -1,101 +1,94 @@
 <html>
-<link rel="stylesheet" type="text.css" href="style.css" />
-<script src="js/jquery-1.10.1.min.js"></script>
-<script>
-    $(document).ready(refresh())
-    function refresh() {
-        $.getJSON('/groups', function (data) {
-            $('.outerTable tr').remove()
-            $.each(data, function (key, value) {
-                $('.outerTable').append($('\
-                    <tr> \
-                        <td>' + value['name'] + '</td> \
-                        <td> \
-                            <table><tr><td>\
-                            <input \
-                                id="slider_' + value['id'] + '" \
-                                type="range" \
-                                min="0" \
-                                max="100" \
-                                step="5" \
-                                value="' + value['level'] + '" \
-                                onchange="updateTextValue(' + value['id'] + ')"> \
-                            </input></td></tr><tr><td> \
-                            <progress min="0" max="100" value="' + value['level'] + '"/> \
-                            </td></tr></table> \
-                        </td> \
-                        <td> \
-                            <input \
-                                id="text_' + value['id'] + '" \
-                                type="text" \
-                                size="2" \
-                                value="' + value['level'] + '" \
-                                onchange="updateRangeValue(' + value['id'] + ')"> \
-                            </input> \
-                        </td> \
-                        <td> \
-                            <a href="/edit.html?id=' + value['id'] + '" \>edit</a> \
-                        </td> \
-                    </tr>'))
-            })
-        })
-    }
+<head>
+    <link rel="stylesheet" type="text.css" href="style.css" />
+    <script src="js/jquery-1.10.1.min.js"></script>
+    <script>
+        $(document).ready(refresh());
 
-    function updateTextValue(id) {
-        document.getElementById('text_' + id).value = document.getElementById('slider_' + id).value
-    }
+        function refresh() {
+            $.getJSON('/groups', function (data) {
+                $('.outerTable').empty();
 
-    function updateRangeValue(id) {
-        document.getElementById('slider_' + id).value = document.getElementById('text-' + id).value
-    }
+                $.each(data, function (key, value) {
+                    var row = $('<tr/>');
+                    $('.outerTable').append(row);
 
-    function sendChanges() {
-        $('input[type="range"]').each(function (index) {
-            id = this.id.replace("slider_", "")
-            value = $(this).val()
+                    row.append($('<td/>').append($('<a/>').attr('href','/edit.html?id=' + value['id']).text(value['name'])));
 
+                    var textBox = $('<td/>').width('50px');
+
+                    var slider = $('<input/>')
+                        .attr('id', 'slider_' + value['id'])
+                        .attr('type', 'range')
+                        .attr('min', 0)
+                        .attr('max', 100)
+                        .attr('step', 5)
+                        .val(value['level'])
+                        .change(function () {
+                            textBox.text(this.value);
+                        });
+
+                    var progress = $('<progress/>')
+                        .attr('min', 0)
+                        .attr('max', 100)
+                        .val(value['level']);
+
+                    slider.change();
+
+                    row.append($('<div/>').append($('<div style="position:relative"/>').append(slider)).append($('<div style="position:relative"/>').append(progress)));
+                    row.append(textBox);
+
+                });
+
+            });
+        }
+
+
+        function sendChanges() {
+            $('input[type="range"]').each(function () {
+                var id = this.id.replace("slider_", "");
+                var value = $(this).val();
+
+                $.ajax({
+                    url: '/groups/' + id + '?level=' + value,
+                    type: 'PUT',
+                    success: refresh
+                });
+            });
+        }
+
+        function newGroup() {
             $.ajax({
-                url: '/groups/' + id + '?level=' + value,
-                type: 'PUT',
-                success: function (data) { refresh() }
+                url: '/groups',
+                type: 'POST',
+                success: refresh
+            });
+        }
+
+        $(function () {
+            $.getJSON('/presets', function (data) {
+                $.each(data, function () {
+                    var groups = this.groups;
+                    $('#presets').append($('<input/>').attr('type', 'button').val(this.name).click(function () {
+                        $.each(groups, function () {
+                            $('#slider_' + this.id).val(this.level);
+                        });
+                    }));
+                });
             });
         });
-    }
-
-    function newGroup() {
-        $.ajax({
-            url: '/groups',
-            type: 'POST',
-            success: function (data) { refresh() }
-        });
-    }
-
-    $(function () {
-        $.getJSON('/presets', function (data) {
-            $.each(data, function () {
-                var groups = this.groups;
-                $('#presets').append($('<input/>').attr('type', 'button').val(this.name).click(function () {
-                    $.each(groups, function () {
-                        $('#slider_' + this.id).val(this.level);
-                    });
-                    //$.each(groups, function() {
-                    //    alert($(this.id));  
-                    //});
-                }));
-            });
-        });
-    });
-</script>
-<body style="height: 100%; width: 100%">
-<div style="float: left; width:50%; display:inline">
-    <h1>Groups  </h1>
-    <table class="outerTable"></table>
-    <a href="#" onclick="newGroup()">Add New Group...</a><p />
-    <input type="button" value="Apply" onclick="sendChanges()" />
-</div>
-<div style="float: left; width:40%; margin-left: 50px;display:ineline">
-    <h1>Presets </h1>
-    <div id="presets"></div>
-</div>
+    </script>
+</head>
+<body>
+    <div class="groups">
+        <h1>Groups</h1>
+        <table class="outerTable"></table>
+        <a href="#" onclick="newGroup()">Add New Group...</a><p />
+        <input type="button" value="Apply" onclick="sendChanges()" />
+    </div>
+    <div class="presets">
+        <h1>Presets</h1>
+        <div id="presets"></div>
+    </div>
 </body>
 </html>

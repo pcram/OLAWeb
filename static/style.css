@@ -22,22 +22,10 @@ table input[type="text"] {
 
 input[type="button"] {
     font-size: 20pt;
-}
+    background-color: gray;
+ }
 
-.toggleButton {
-    float: left;
-    font-size: 40pt;
-    width: 100px;
-    background-color: #cccccc;
-    margin: 10px;
-    text-align: center;
-}
 
-/*.columnLayout {
-    column-count: 3;
-    -moz-column-count: 3;
-    -webkit-column-count: 3;
-}*/
 
 label {
     position: relative;
@@ -48,3 +36,37 @@ label {
         position: absolute;
         visibility: hidden;
     }
+
+
+.groups {
+    float: left;
+    margin-right: 50px;
+}
+
+.presets {
+    float: left;
+    width: 30%;
+    
+}
+
+.presets input[type='button'] {
+       display: block;
+    float: right;
+    margin: 15px 0 0 0;
+    width: 200px;
+
+}
+
+body {
+    background-color: black;
+    color: white;
+}
+
+a {
+    color: white;
+    margin: 15px;
+}
+
+h1 {
+    margin-bottom: 0px;
+}
