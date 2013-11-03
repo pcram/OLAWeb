@@ -3,9 +3,8 @@
     <link rel="stylesheet" type="text.css" href="style.css" />
     <script src="js/jquery-1.10.1.min.js"></script>
     <script>
-        $(document).ready(refresh());
 
-        function refresh() {
+        $(function() {
             $.getJSON('/groups', function (data) {
                 $('.outerTable').empty();
 
@@ -13,7 +12,7 @@
                     var row = $('<tr/>');
                     $('.outerTable').append(row);
 
-                    row.append($('<td/>').append($('<a/>').attr('href','/edit.html?id=' + value['id']).text(value['name'])));
+                    row.append($('<td/>').append($('<a/>').attr('href', '/edit.html?id=' + value['id']).text(value['name'])));
 
                     var textBox = $('<td/>').width('50px');
 
@@ -31,6 +30,7 @@
                     var progress = $('<progress/>')
                         .attr('min', 0)
                         .attr('max', 100)
+                        .attr('id', 'progress_' + value['id'])
                         .val(value['level']);
 
                     slider.change();
@@ -40,7 +40,27 @@
 
                 });
 
+                setInterval(refresh, 1000);
             });
+        });
+
+        var lastUpdate = $.now();
+        $('#status').hide();
+        
+        function refresh() {
+            $.getJSON('/groups', function (data) {
+                lastUpdate = $.now();
+                $.each(data, function (key, value) {
+                    $('#progress_' + value['id']).val(value['level']);
+                });
+            });
+
+            if (lastUpdate < ($.now() - 5000)) {
+                $('#connectionLost').show();
+
+            } else {
+                $('#connectionLost').hide();
+            }
         }
 
 
@@ -80,6 +100,9 @@
     </script>
 </head>
 <body>
+    <div id="connectionLost">
+        Connection Lost
+    </div>
     <div class="groups">
         <h1>Groups</h1>
         <table class="outerTable"></table>
