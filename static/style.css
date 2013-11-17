@@ -24,10 +24,36 @@ table input[type="text"] {
 input[type="button"] {
     font-size: 20pt;
     background-color: gray;
- }
+}
 
 
+.toggleButton {
+    float: left;
+    font-size: 40pt;
+    width: 100px;
+    color: black;
+    margin: 10px;
+    text-align: center;
+    height: 65px;
+}
 
+.otherChannels {
+    font-size: 8pt;
+    position: relative;
+    margin-top: -65px;
+    margin-left: 5px;
+}
+
+    .otherChannels div {
+        float: left;
+        margin-right: 5px;
+    }
+
+/*.columnLayout {
+    column-count: 3;
+    -moz-column-count: 3;
+    -webkit-column-count: 3;
+}*/
 
 label {
     position: relative;
@@ -48,20 +74,24 @@ label {
 .presets {
     float: left;
     width: 30%;
-    
 }
 
-.presets input[type='button'] {
-       display: block;
-    float: right;
-    margin: 15px 0 0 0;
-    width: 200px;
-
-}
+    .presets input[type='button'] {
+        display: block;
+        float: right;
+        margin: 15px 0 0 0;
+        width: 200px;
+    }
 
 body {
     background-color: black;
     color: white;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 a {
