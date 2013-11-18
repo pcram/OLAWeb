@@ -8,6 +8,8 @@
         );
     }
 
+    var recent = {}
+
     $(document).ready(refresh())
     function refresh() {
         $.getJSON('/groups/' + getURLParameter('id'), function (data) {
@@ -60,7 +62,7 @@
 
 
             $("input:checkbox").each(function () {
-                $(this).closest("div").css('background-color', this.checked ? '#ffff00' : '#888888');
+                updateBackgroundColor($(this));
                 $(this).closest("div").mousedown(onPressed);
                 $(this).closest("div").mouseover(onMouseOver);
             });
@@ -70,32 +72,40 @@
 
     }
 
+    function updateBackgroundColor(checkbox)
+    {
+        color = '#888888';
+        if (checkbox.prop('checked'))
+            color = '#ffff00'
+        else if (checkbox in recent)
+            color = '#888800'
+
+        checkbox.closest("div").css('background-color', color);
+ 
+    }
+
     var checking = null
 
     $(document).mouseup(function (e, n) { checking = null });
 
-    function setCheck(checkbox, val) {
-        checkbox.prop('checked', val);
-        if (val) {
-            checkbox.closest("div").css('background-color', '#ffff00');
-        } else {
-            checkbox.closest("div").css('background-color', '#888888')
-        }
-
-        save();
-    }
-
+    
     function onPressed(e, n) {
         var checkbox = $(this).children("label").children("input");
 
-        setCheck(checkbox, !checkbox.prop('checked'));
+        recent[checkbox] = true;
+
+        checkbox.prop('checked', !checkbox.prop('checked'));
+        updateBackgroundColor(checkbox);
+        save();
         checking = checkbox.prop('checked')
     }
 
     function onMouseOver(e, n) {
         if (checking != null) {
             var checkbox = $(this).closest('div').children("label").children("input");
-            setCheck(checkbox, checking);
+            checkbox.prop('checked', checking);
+            updateBackgroundColor(checkbox);
+            save();
         }
     }
 
