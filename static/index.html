@@ -14,7 +14,9 @@
 
                     row.append($('<td/>').append($('<a/>').attr('href', '/edit.html?id=' + value['id']).text(value['name'])));
 
-                    var textBox = $('<td/>').width('50px');
+                    var textBox = $('<td/>')
+                        .attr('id', 'text_' + value['id'])
+                        .width('50px');
 
                     var slider = $('<input/>')
                         .attr('id', 'slider_' + value['id'])
@@ -92,6 +94,7 @@
                     $('#presets').append($('<input/>').attr('type', 'button').val(this.name).click(function () {
                         $.each(groups, function () {
                             $('#slider_' + this.id).val(this.level);
+                            $('#text_' + this.id).text(this.level);
                         });
                     }));
                 });
